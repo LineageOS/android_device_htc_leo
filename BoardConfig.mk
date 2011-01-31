@@ -78,6 +78,9 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 1240
 # Use RGB565 surfaces until userspace drivers are upgraded
 BOARD_NO_RGBX_8888 := true
 
+# Use Special Leo update
+TARGET_USES_LEOUPDATE := true
+
 BOARD_HAVE_FM_RADIO := true
 BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
 
