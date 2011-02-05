@@ -110,9 +110,7 @@ PRODUCT_PACKAGES += \
     gralloc.qsd8k \
     copybit.qsd8k \
     leo-reference-ril \
-    gps.leo \
-    libOmxCore \
-    libOmxVidEnc 
+    gps.leo
 
 
 
@@ -145,6 +143,15 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/htc/leo/zImage:boot/zImage \
     device/htc/leo/initrd.gz:boot/initrd.gz \
+
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+LOCAL_KERNEL := device/htc/leo/kernel
+else
+LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_KERNEL):kernel
 
 # media profiles and capabilities spec
 $(call inherit-product, device/htc/leo/media_a1026.mk)
