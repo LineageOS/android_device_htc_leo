@@ -46,7 +46,7 @@ adb pull /system/lib/libhtc_ril.so ../../../vendor/$MANUFACTURER/$DEVICE/proprie
 adb pull /system/lib/libhtc_ril_wrapper.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libhtc_ril_wrapper.so
 adb pull /system/lib/liboemcamera.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/liboemcamera.so
 adb pull /system/lib/libOmxVdec.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxVdec.so
-adb pull /system/lib/libOmxVidenc.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxVidenc.so
+adb pull /system/lib/libOmxVidEnc.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxVidEnc.so
 adb pull /system/lib/libOmxCore.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxCore.so
 adb pull /system/lib/libmm-omxcore.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libmm-omxcore.so
 
@@ -76,6 +76,7 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/akmd:system/bin/akmd \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/parse_radio_log:system/bin/parse_radio_log \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/AudioBTID.csv:system/etc/AudioBTID.csv \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/AdieHWCodecSetting.csv:system/etc/AdieHWCodecSetting.csv \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/bcm4329.hcd:system/etc/firmware/bcm4329.hcd \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/BCM4329B1_002.002.023.0360.0362.hcd:system/etc/firmware/BCM4329B1_002.002.023.0360.0362.hcd \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/BCM4329B1_002.002.023.0436.0439.hcd:system/etc/firmware/BCM4329B1_002.002.023.0436.0439.hcd \\
