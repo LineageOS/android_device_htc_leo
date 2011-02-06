@@ -131,6 +131,9 @@ PRODUCT_COPY_FILES += \
     device/htc/leo/firmware/fw_bcm4329.bin:system/etc/firmware/fw_bcm4329.bin \
     device/htc/leo/firmware/fw_bcm4329_apsta.bin:system/etc/firmware/fw_bcm4329_apsta.bin
 
+#GSM APN LIST
+PRODUCT_COPY_FILES += \
+vendor/cyanogen/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
 
 
 PRODUCT_COPY_FILES += \

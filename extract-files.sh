@@ -25,6 +25,7 @@ chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/akmd
 adb pull /system/bin/parse_radio_log ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/parse_radio_log
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/parse_radio_log
 adb pull /system/etc/AudioBTID.csv ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/AudioBTID.csv
+adb pull /system/etc/AdieHWCodecSetting.csv ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/AdieHWCodecSetting.csv
 adb pull /system/etc/firmware/BCM4329B1_002.002.023.0360.0362.hcd ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/BCM4329B1_002.002.023.0360.0362.hcd
 adb pull /system/etc/firmware/BCM4329B1_002.002.023.0436.0439.hcd ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/BCM4329B1_002.002.023.0436.0439.hcd
 adb pull /system/etc/firmware/BCM4329B1_002.002.023.0436.0439.hcd ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/BCM4329B1_002.002.023.0436.0439.hcd
