@@ -109,6 +109,7 @@ PRODUCT_PACKAGES += \
     librs_jni \
     gralloc.qsd8k \
     copybit.qsd8k \
+    lights.leo \
     leo-reference-ril \
     gps.leo
 
