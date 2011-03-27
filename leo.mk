@@ -19,9 +19,6 @@
 # not specialized for any geography.
 #
 
-# The gps config appropriate for this device
-PRODUCT_COPY_FILES += \
-    device/htc/leo/gps.conf:system/etc/gps.conf
 
 ## (1) First, the most specific values, i.e. the aspects that are specific to GSM
 
@@ -50,9 +47,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.default_network=0
 
-# For HSDPA low throughput
+
+# Set default_france.acdb to audio_ctl driver if the ro.cid is HTC__203
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.ril.disable.power.collapse = 1
+    ro.ril.enable.prl.recognition=1
 
 # AGPS otpions
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -63,17 +61,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=131072
 
-# For PDP overlap problem
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.ril.avoid.pdp.overlap = 1
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-# Set default_france.acdb to audio_ctl driver if the ro.cid is HTC__203
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.ril.enable.prl.recognition = 0
-
+    ro.media.dec.jpeg.memcap=20000000
 
 # This is a high density device with more memory, so larger vm heaps for it.
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -97,6 +90,7 @@ PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
     frameworks/base/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
     frameworks/base/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
+    frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/base/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml
 
 # media config xml file
@@ -111,7 +105,7 @@ PRODUCT_PACKAGES += \
     copybit.qsd8k \
     lights.leo \
     leo-reference-ril \
-    gps.leo
+    gps.htcleo
 
 
 
@@ -142,10 +136,11 @@ PRODUCT_COPY_FILES += \
     device/htc/leo/modules/cifs.ko:system/lib/modules/cifs.ko \
     device/htc/leo/modules/msm_rmnet.ko:system/lib/modules/msm_rmnet.ko \
     device/htc/leo/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-    device/htc/leo/modules/tun.ko:system/lib/modules/tun.ko
+    device/htc/leo/modules/tun.ko:system/lib/modules/tun.ko \
+    device/htc/leo/modules/fuse.ko:system/lib/modules/fuse.ko
 
 PRODUCT_COPY_FILES += \
-    device/htc/leo/zImage:boot/zImage \
+    device/htc/leo/kernel:boot/zImage \
     device/htc/leo/initrd.gz:boot/initrd.gz \
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
@@ -153,6 +148,9 @@ LOCAL_KERNEL := device/htc/leo/kernel
 else
 LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
+
+# The gps config appropriate for this device
+$(call inherit-product, device/common/gps/gps_as_supl.mk)
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
