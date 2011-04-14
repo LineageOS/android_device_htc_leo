@@ -50,8 +50,7 @@ adb pull /system/lib/libOmxVidEnc.so ../../../vendor/$MANUFACTURER/$DEVICE/propr
 adb pull /system/lib/libOmxCore.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxCore.so
 adb pull /system/lib/libmm-omxcore.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libmm-omxcore.so
 adb pull /system/lib/libgps.so ..h/../../vendor/$MANUFACTURER/$DEVICE/proprietary/libgps.so
-adb pull /system/lib/hw/gps.htcleo.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/gps.htcleo.so
-adb pull /system/lib/hw/sensors.bravo.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/sensors.bravo.so
+adb pull /system/lib/hw/gps.htcleo.so ..h/../../vendor/$MANUFACTURER/$DEVICE/proprietary/gps.htcleo.so
 
 (cat << EOF) | sed s/__DEVICE__/$DEVICE/g | sed s/__MANUFACTURER__/$MANUFACTURER/g > ../../../vendor/$MANUFACTURER/$DEVICE/device-vendor-blobs.mk
 # Copyright (C) 2010 The Android Open Source Project
@@ -103,9 +102,9 @@ vendor/__MANUFACTURER__/__DEVICE__/proprietary/htcleo.acdb:system/etc/firmware/h
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libOmxVdec.so:system/lib/libOmxVdec.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libOmxVidEnc.so:system/lib/libOmxVidEnc.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libOmxCore.so:system/lib/libOmxCore.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libgps.so:system/lib/libgps.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/gps.htcleo.so:system/lib/hw/gps.htcleo.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensors.bravo.so:system/lib/hw/sensors.bravo.so \\
+vendor/__MANUFACTURER__/__DEVICE__/proprietary/gps.htcleo.so:system/lib/hw/gps.htcleo.so \\
+vendor/__MANUFACTURER__/__DEVICE__/proprietary/libgps.so:system/lib/libgps.so \\
+vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensors.bravo.so:system/lib/hw/sensors.bravo.so \\
 EOF
 
 ./setup-makefiles.sh

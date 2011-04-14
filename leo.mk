@@ -39,6 +39,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsdpa.category=8 \
     ro.ril.hsupa.category=5 \
     ro.ril.hsxpa=2 \
+    mobiledata.interfaces=rmnet0,rmnet1,rmnet2 \
     wifi.interface=eth0 \
     wifi.supplicant_scan_interval=15
 
@@ -51,10 +52,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Set default_france.acdb to audio_ctl driver if the ro.cid is HTC__203
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.enable.prl.recognition=1
-
-# AGPS otpions
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.ril.def.agps.mode=2
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
@@ -98,14 +95,13 @@ PRODUCT_COPY_FILES += \
     device/htc/leo/media_profiles.xml:system/etc/media_profiles.xml
 
 PRODUCT_PACKAGES += \
-    sensors.leo \
-    lights.leo \
+    sensors.htcleo \
+    lights.htcleo \
     librs_jni \
     gralloc.qsd8k \
     copybit.qsd8k \
-    lights.leo \
     leo-reference-ril \
-    gps.htcleo
+    gps.leo
 
 
 
