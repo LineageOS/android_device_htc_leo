@@ -101,3 +101,6 @@ TARGET_PREBUILT_KERNEL := device/htc/leo/kernel
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := htcleo
 # AMSS version to use for GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 3200
+
+TARGET_PREBUILT_RECOVERY_KERNEL := device/htc/leo/recovery_kernel
+
