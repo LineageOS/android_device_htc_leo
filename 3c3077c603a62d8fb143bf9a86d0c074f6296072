@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAADn//+1s\u003d",
+        "filename": "overlay/frameworks/base/core/res/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2011-04-21T22:01:52Z",
+      "side": 1,
+      "message": "add ppp//d here too",
+      "revId": "3c3077c603a62d8fb143bf9a86d0c074f6296072",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
