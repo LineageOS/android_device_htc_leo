@@ -32,8 +32,6 @@
     <bool name="config_automatic_brightness_available">true</bool>
 
    
-    <bool name="config_animateScreenLights">false</bool>
-
     <!-- disable menu hard key on HD2 in non-pattern lockscreen -->
     <bool name="config_disableMenuKeyInLockScreen">true</bool>
 
@@ -182,6 +180,7 @@
    <!-- Enable use of power animations -->
     <bool name="config_animateScreenLights">false</bool>
 
+   <!-- Enable Tablet tweaks -->
     <bool name="cm_default_has_soft_buttons">true</bool>
     <bool name="cm_default_show_soft_home">false</bool>
     <bool name="cm_default_show_soft_menu">false</bool>

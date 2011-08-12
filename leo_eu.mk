@@ -20,7 +20,9 @@
 #
 
 # The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_eu_supl.mk)
+PRODUCT_COPY_FILES += \
+     device/htc/leo/gps_eu.conf:system/etc/gps.conf
+
 
 # The rest of the configuration is inherited from a generic config
 $(call inherit-product, device/htc/leo/leo.mk)
