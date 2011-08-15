@@ -95,13 +95,13 @@ PRODUCT_COPY_FILES += \
     device/htc/leo/media_profiles.xml:system/etc/media_profiles.xml
 
 PRODUCT_PACKAGES += \
-    sensors.htcleo \
-    lights.htcleo \
+    sensors.$(TARGET_BOOTLOADER_BOARD_NAME) \
+    lights.$(TARGET_BOOTLOADER_BOARD_NAME) \
     librs_jni \
     gralloc.qsd8k \
     copybit.qsd8k \
     leo-reference-ril \
-    gps.htcleo \
+    gps.$(TARGET_BOOTLOADER_BOARD_NAME) \
     libgps \
     libhtc_ril_wrapper
 
