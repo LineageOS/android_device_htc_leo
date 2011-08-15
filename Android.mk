@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),leo)
+
 LOCAL_PATH := $(my-dir)
 subdir_makefiles := \
 	$(LOCAL_PATH)/libreference-ril/Android.mk \
@@ -21,3 +23,5 @@ subdir_makefiles := \
 	$(LOCAL_PATH)/libhtc_ril_wrapper/Android.mk
 
 include $(subdir_makefiles)
+
+endif
