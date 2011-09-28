@@ -23,7 +23,8 @@
 ## (1) First, the most specific values, i.e. the aspects that are specific to GSM
 
 PRODUCT_COPY_FILES += \
-    device/htc/leo/init.leo.rc:root/init.leo.rc \
+    device/htc/leo/init.htcleo.rc:root/init.htcleo.rc \
+    device/htc/leo/init.rc:root/init.rc \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=240 \
@@ -139,7 +140,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     device/htc/leo/kernel:boot/zImage \
-    device/htc/leo/initrd.gz:boot/initrd.gz \
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 LOCAL_KERNEL := device/htc/leo/kernel

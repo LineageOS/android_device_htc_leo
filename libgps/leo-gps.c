@@ -40,7 +40,6 @@
 #define  XTRA_BLOCK_SIZE  400
 #define  ENABLE_NMEA 1
 
-#define  MEASUREMENT_PRECISION  10.0f // in meters
 #define  DUMP_DATA  0
 #define  GPS_DEBUG  1
 
@@ -83,6 +82,7 @@ void update_gps_svstatus(GpsSvStatus *svstatus);
 void update_gps_nmea(GpsUtcTime timestamp, const char* nmea, int length);
 
 extern uint8_t get_cleanup_value();
+extern uint8_t get_precision_value();
 
 /*****************************************************************/
 /*****************************************************************/
@@ -445,7 +445,8 @@ nmea_reader_update_accuracy( NmeaReader*  r,
         return -1;
 
     r->fix.flags   |= GPS_LOCATION_HAS_ACCURACY;
-    r->fix.accuracy = (float)str2float(tok.p, tok.end) * MEASUREMENT_PRECISION;
+    float precision = (float)get_precision_value();
+    r->fix.accuracy = (float)str2float(tok.p, tok.end) * precision;
     return 0;
 }
 
@@ -835,7 +836,9 @@ void update_gps_status(GpsStatusValue value) {
 }
 
 void update_gps_svstatus(GpsSvStatus *svstatus) {
+#if DUMP_DATA
     D("%s(): GpsSvStatus.num_svs=%d", __FUNCTION__, svstatus->num_svs);
+#endif
     GpsState*  state = _gps_state;
     //Should be made thread safe...
     if(state->callbacks.sv_status_cb)
@@ -1125,8 +1128,16 @@ static int gps_xtra_inject_xtra_data(char* data, int length) {
         total_parts += 1;
     }
 
+    uint8_t part_no = total_parts % 10;
+    if (part_no > 0)
+        part_no = total_parts - part_no;
+    else
+        part_no = total_parts - 5;
+
     len_injected = 0; // O bytes injected
     // XTRA injection starts with part 1
+    D("gps_xtra_inject_xtra_data: inject part = %d/%d, len = %d\n", 1, total_parts, XTRA_BLOCK_SIZE);
+    D("gps_xtra_inject_xtra_data: ......");
     for (part = 1; part <= total_parts; part++)
     {
         part_len = XTRA_BLOCK_SIZE;
@@ -1136,7 +1147,8 @@ static int gps_xtra_inject_xtra_data(char* data, int length) {
         }
         xtra_data_ptr = data + len_injected;
 
-        D("gps_xtra_inject_xtra_data: inject part = %d/%d, len = %d\n", part, total_parts, part_len);
+        if (part > part_no) // reduce the number of the xtra debugging info
+            D("gps_xtra_inject_xtra_data: inject part = %d/%d, len = %d\n", part, total_parts, part_len);
 
         if (part < total_parts)
         {
@@ -1306,11 +1318,10 @@ static int gps_set_position_mode(GpsPositionMode mode, int fix_frequency) {
         //We don't handle single shot requests atm...
         //So one every 1 seconds will it be.
         fix_frequency = 1;
-    } else if (fix_frequency > 8) {
-        //Ok, A9 will timeout with so high value.
-        //Set it to 8.
-        fix_frequency = 8;
+    } else if (fix_frequency > 1800) { //30mins
+        fix_frequency = 1800;
     }
+    // fix_frequency is only used by NMEA version
     s->fix_freq = fix_frequency;
     return 0;
 }

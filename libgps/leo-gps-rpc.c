@@ -40,7 +40,6 @@
 
 #define  ENABLE_NMEA 1
 
-#define  MEASUREMENT_PRECISION  10.0f // in meters
 #define  DUMP_DATA  0
 #define  GPS_DEBUG  0
 
@@ -95,6 +94,13 @@ static uint32_t use_nmea=0;
 static struct CLIENT *_clnt;
 static struct timeval timeout;
 static SVCXPRT *_svc;
+
+static uint8_t CHECKED[4] = {0};
+static uint8_t XTRA_AUTO_DOWNLOAD_ENABLED = 0;
+static uint8_t XTRA_DOWNLOAD_INTERVAL = 24;  // hours
+static uint8_t CLEANUP_ENABLED = 1;
+static uint8_t SESSION_TIMEOUT = 2;  // seconds
+static uint8_t MEASUREMENT_PRECISION = 10;  // meters
 
 struct params {
     uint32_t *data;
@@ -691,7 +697,7 @@ void dispatch_pdsm_pd(uint32_t *data) {
         if (ntohl(data[75])) {
             fix.flags |= GPS_LOCATION_HAS_ACCURACY;
             float hdop = (float)ntohl(data[75]) / 10.0f / 2.0f;
-            fix.accuracy = hdop * MEASUREMENT_PRECISION;
+            fix.accuracy = hdop * (float)MEASUREMENT_PRECISION;
         }
 
         union {
@@ -752,7 +758,6 @@ void dispatch_pdsm_ext(uint32_t *data) {
 
     no_fix++;
     if (no_fix < 2) return;
-    if (no_fix == UINT32_MAX) no_fix = 2; // avoid overflow
     
     ret.num_svs=ntohl(data[8]);
     D("%s() is called. num_svs=%d", __FUNCTION__, ret.num_svs);
@@ -838,15 +843,14 @@ void dispatch(struct svc_req* a, registered_server* svc) {
     svc_sendreply(svc, xdr_int, &result);
 }
 
-static uint8_t CHECKED[4] = {0};
-static uint8_t XTRA_AUTO_DOWNLOAD_ENABLED = 0;
-static uint8_t XTRA_DOWNLOAD_INTERVAL = 24;  // hours
-static uint8_t CLEANUP_ENABLED = 1;
-static uint8_t SESSION_TIMEOUT = 2;  // seconds
-
 uint8_t get_cleanup_value() {
     D("%s() is called: %d", __FUNCTION__, CLEANUP_ENABLED);
     return CLEANUP_ENABLED;
+}
+
+uint8_t get_precision_value() {
+    D("%s() is called: %d", __FUNCTION__, MEASUREMENT_PRECISION);
+    return MEASUREMENT_PRECISION;
 }
 
 int parse_gps_conf() {
@@ -860,6 +864,7 @@ int parse_gps_conf() {
     char *check_interval = "GPS1_XTRA_DOWNLOAD_INTERVAL";
     char *check_cleanup = "GPS1_CLEANUP_ENABLED";
     char *check_timeout = "GPS1_SESSION_TIMEOUT";
+    char *check_precision = "GPS1_MEASUREMENT_PRECISION";
     char *result;
     char str[256];
     int i = -1;
@@ -905,8 +910,23 @@ int parse_gps_conf() {
                 CHECKED[3] = 1;
             }
         }
+        if (!CHECKED[4]) {
+            result = strstr(str, check_precision);
+            if (result != NULL) {
+                result = result+strlen(check_precision)+1;
+                i = atoi(result);
+                if (i>0 && i<16)
+                    MEASUREMENT_PRECISION = i;
+                CHECKED[4] = 1;
+            }
+        }
     }
     fclose(file);
+    LOGD("%s() is called: GPS1_XTRA_AUTO_DOWNLOAD_ENABLED = %d", __FUNCTION__, XTRA_AUTO_DOWNLOAD_ENABLED);
+    LOGD("%s() is called: GPS1_XTRA_DOWNLOAD_INTERVAL = %d", __FUNCTION__, XTRA_DOWNLOAD_INTERVAL);
+    LOGD("%s() is called: GPS1_CLEANUP_ENABLED = %d", __FUNCTION__, CLEANUP_ENABLED);
+    LOGD("%s() is called: GPS1_SESSION_TIMEOUT = %d", __FUNCTION__, SESSION_TIMEOUT);
+    LOGD("%s() is called: GPS1_MEASUREMENT_PRECISION = %d", __FUNCTION__, MEASUREMENT_PRECISION);
     return 0;
 }
 
@@ -952,6 +972,11 @@ int init_leo()
     pdsm_client_act(clnt, 4);
     
     if (!CHECKED[0]) {
+        if (use_nmea)
+            LOGD("%s() is called: %s version", __FUNCTION__, "NMEA");
+        else
+            LOGD("%s() is called: %s version", __FUNCTION__, "RPC");
+
         parse_gps_conf();
         if (XTRA_AUTO_DOWNLOAD_ENABLED)
             gps_xtra_set_auto_params();
