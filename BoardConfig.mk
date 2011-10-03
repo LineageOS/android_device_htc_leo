@@ -75,10 +75,7 @@ BOARD_USE_KINETO_COMPATIBILITY := true
 BOARD_HAVE_FM_RADIO := true
 BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
 
-# Use Special Leo update
-TARGET_USES_LEOUPDATE := true
-
-
+TARGET_CUSTOM_RELEASETOOL := device/htc/leo/releasetools/squisher
 
 # # cat /proc/mtd
 # dev:    size   erasesize  name
@@ -107,5 +104,3 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 3200
 TARGET_PREBUILT_RECOVERY_KERNEL := device/htc/leo/recovery_kernel
 
 BOARD_USES_RECOVERY_CHARGEMODE := true
-
-TARGET_PROVIDES_INIT_RC := true

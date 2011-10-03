@@ -1,3 +1,21 @@
+on init
+    symlink /dev/msm_camera/control0 /dev/msm_camera/control1
+    symlink /dev/msm_camera/frame0 /dev/msm_camera/frame1
+    symlink /dev/msm_camera/config0 /dev/msm_camera/config1
+
+    write /proc/sys/kernel/sched_min_granularity_ns 100000
+
+on fs
+    mount yaffs2 mtd@system /system remount
+    mount rootfs rootfs / rw remount
+
+    # DRMv1 rights storage
+    symlink /data/local /data/drm
+    mkdir /data/local/rights 0777 shell shell
+    chown shell shell /data/drm
+    write /data/drm/rights/mid.txt 0
+    chmod 0777 /data/drm/rights/mid.txt
+
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
@@ -21,11 +39,65 @@ on boot
     chown system system /data/misc/screen_lock_status
     chmod 644 /data/misc/screen_lock_status
 
+    # Write value must be consistent with the above properties.
+    # Note that the driver only supports 6 slots, so we have HOME_APP at the
+    # same memory level as services.
+    write /sys/module/lowmemorykiller/parameters/adj 0,1,2,7,14,15
+
+    chown radio system /sys/camera_led_status/led_ril_status
+    chown system system /sys/camera_led_status/led_wimax_status
+    chown system system /sys/camera_led_status/led_hotspot_status
+    chown media system /sys/android_camera/cam_mode
+    chown system system /sys/class/leds/caps/brightness
+    chown system system /sys/class/leds/func/brightness
+    chown system system /sys/class/leds/amber/brightness
+    chown system system /sys/class/leds/green/blink
+    chown system system /sys/class/leds/green/off_timer
+    chown system system /sys/class/leds/amber/blink
+    chown system system /sys/class/leds/amber/off_timer
+
+
     # for wireless modem
     chown system system /sys/module/serial/parameters/modem_enabled
     chown system system /dev/ttyHSUSB0
     chown system system /dev/smd9
     chown media media /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+    chmod 0666 /dev/ttyHS1
+    chown root radio /proc/cmdline
+    chmod 666 /proc/cmdline
+ 
+    chmod 666 /dev/input/event0
+    chmod 666 /dev/input/event1
+    chmod 666 /dev/input/event2
+    chmod 666 /dev/input/event3
+    chmod 666 /dev/input/event4
+    chmod 666 /dev/input/event5
+    chmod 666 /dev/input/event6
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0018/enable
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0019/enable
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0018/rate  
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0019/rate  
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0018/scale
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0019/scale
+ 
+    chmod 666 /dev/uinput
+    chmod 666 /etc/bluez/audio.conf
+    chmod 666 /etc/bluez/hcid.conf
+    chmod 666 /etc/bluez/input.conf
+ 
+    chmod 666 /dev/msm_snd
+    chmod 666 /dev/msm_pcm_in
+    chmod 666 /dev/msm_audpre
+    chmod 666 /dev/msm_mp3  
+    chmod 666 /dev/msm_pcm_out
+    chmod 666 /dev/msm_pcm_ctl
+    chmod 666 /dev/msm_hw3dm  
+    chmod 666 /dev/msm_hw3dc 
+
+    # Fix permissions for GPS NMEA
+    chown system system /dev/smd27
+    chmod 777 /dev/smd27
 
     # Power Management
     write /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate 40000
@@ -38,17 +110,17 @@ on boot
     write /sys/module/lowmemorykiller/parameters/check_filepages 
  
  
-service hciattach /system/bin/brcm_patchram_plus --enable_hci\
+service hciattach /system/bin/brcm_patchram_plus --enable_hci \
      --baudrate 3000000 --patchram /etc/firmware/bcm4329.hcd /dev/ttyHS0
     user bluetooth                
     group bluetooth net_bt_admin
     disabled    
  
-#service btld /system/bin/logwrapper /system/bin/btld -lpm 1 -hb 3000000
-#    user root                                              
-#    group bluetooth net_bt_admin                            
-#    disabled                                                
-#    oneshot
+service btld /system/bin/logwrapper /system/bin/btld -lpm 1 -hb 3000000
+    user root                                              
+    group bluetooth net_bt_admin                            
+    disabled                                                
+    oneshot
 
 # compass/accelerometer daemon
 service akmd /system/bin/akmd
@@ -76,67 +148,67 @@ service udhcpd /system/bin/udhcpd
     disabled
     oneshot
  
-#service netsharing_on /system/bin/netsharing net on
-#    disabled
-#    oneshot
+service netsharing_on /system/bin/netsharing net on
+    disabled
+    oneshot
  
-#service netsharing_off /system/bin/netsharing net off
-#    disabled
-#    oneshot
+service netsharing_off /system/bin/netsharing net off
+    disabled
+    oneshot
  
-#service netsharing_pass /system/bin/netsharing net_pass on
-#    disabled
-#    oneshot
+service netsharing_pass /system/bin/netsharing net_pass on
+    disabled
+    oneshot
  
-#service modem /system/xbin/wireless_modem
-#    user system
-#    group system
-#    disabled
+service modem /system/xbin/wireless_modem
+    user system
+    group system
+    disabled
  
-#service zchgd /system/bin/zchgd
-#    user root
-#    group root graphics
-#    oneshot
+service zchgd /system/bin/zchgd
+    user root
+    group root graphics
+    oneshot
  
 service dumpstate /system/bin/dumpstate -s
     socket dumpstate stream 0660 shell log
     disabled
     oneshot
  
-#on property:dev.bootcomplete=1
-#    start bootcomplete
+on property:dev.bootcomplete=1
+    start bootcomplete
  
-#service bootcomplete /system/bin/bootcomplete
-#    user root
-#    group root
-#    disabled
-#    oneshot
+service bootcomplete /system/bin/bootcomplete
+    user root
+    group root
+    disabled
+    oneshot
  
-#service shutdown /system/bin/shutdown
-#    user root
-#    group root
-#    disabled
-#    oneshot
+service shutdown /system/bin/shutdown
+    user root
+    group root
+    disabled
+    oneshot
  
-#service ipd /system/bin/ipd
-#    socket ipd stream 666 root inet
+service ipd /system/bin/ipd
+    socket ipd stream 666 root inet
  
 # Execute files in /etc/init.d before booting
 service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
     disabled
     oneshot
  
-#on property:service.modem.enable=1
-#    start modem
+on property:service.modem.enable=1
+    start modem
  
-#on property:service.modem.enable=0
-#    stop modem
+on property:service.modem.enable=0
+    stop modem
  
-#service srv_ser2net /system/bin/ser2net -n
-#    disabled
+service srv_ser2net /system/bin/ser2net -n
+    disabled
  
-#on property:service.ser2net.enable=1
-#    start srv_ser2net
+on property:service.ser2net.enable=1
+    start srv_ser2net
  
-#on property:service.ser2net.enable=0
-#    stop srv_ser2net
+on property:service.ser2net.enable=0
+    stop srv_ser2net
