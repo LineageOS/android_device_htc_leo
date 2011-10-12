@@ -43,14 +43,11 @@ adb pull /system/lib/libcamera.so ../../../vendor/$MANUFACTURER/$DEVICE/propriet
 adb pull /system/lib/libgsl.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libgsl.so
 adb pull /system/lib/libhtc_acoustic.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libhtc_acoustic.so
 adb pull /system/lib/libhtc_ril.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libhtc_ril.so
-adb pull /system/lib/libhtc_ril_wrapper.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libhtc_ril_wrapper.so
 adb pull /system/lib/liboemcamera.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/liboemcamera.so
 adb pull /system/lib/libOmxVdec.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxVdec.so
 adb pull /system/lib/libOmxVidEnc.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxVidEnc.so
 adb pull /system/lib/libOmxCore.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libOmxCore.so
 adb pull /system/lib/libmm-omxcore.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libmm-omxcore.so
-adb pull /system/lib/libgps.so ..h/../../vendor/$MANUFACTURER/$DEVICE/proprietary/libgps.so
-adb pull /system/lib/hw/gps.htcleo.so ..h/../../vendor/$MANUFACTURER/$DEVICE/proprietary/gps.htcleo.so
 
 (cat << EOF) | sed s/__DEVICE__/$DEVICE/g | sed s/__MANUFACTURER__/$MANUFACTURER/g > ../../../vendor/$MANUFACTURER/$DEVICE/device-vendor-blobs.mk
 # Copyright (C) 2010 The Android Open Source Project
@@ -83,10 +80,10 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/BCM4329B1_002.002.023.0360.0362.hcd:system/etc/firmware/BCM4329B1_002.002.023.0360.0362.hcd \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/BCM4329B1_002.002.023.0436.0439.hcd:system/etc/firmware/BCM4329B1_002.002.023.0436.0439.hcd \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/BCM4329B1_002.002.023.0511.0538.hcd:system/etc/firmware/BCM4329B1_002.002.023.0511.0538.hcd \\
-vendor/__MANUFACTURER__/__DEVICE__/proprietary/htcleo.acdb:system/etc/firmware/htcleo.acdb \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/htcleo.acdb:system/etc/firmware/htcleo.acdb \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/bcm4329.hcd:system/etc/firmware/bcm4329.hcd \\
-     vendor/__MANUFACTURER__/__DEVICE__/proprietary/htcleo.acdb:system/etc/firmware/htcleo.acdb \\
-     vendor/__MANUFACTURER__/__DEVICE__/proprietary/default.acdb:system/etc/firmware/default.acdb \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/htcleo.acdb:system/etc/firmware/htcleo.acdb \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/default.acdb:system/etc/firmware/default.acdb \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/yamato_pfp.fw:system/etc/firmware/yamato_pfp.fw \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/yamato_pm4.fw:system/etc/firmware/yamato_pm4.fw \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \\
@@ -97,14 +94,11 @@ vendor/__MANUFACTURER__/__DEVICE__/proprietary/htcleo.acdb:system/etc/firmware/h
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libgsl.so:system/lib/libgsl.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libhtc_acoustic.so:system/lib/libhtc_acoustic.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libhtc_ril.so:system/lib/libhtc_ril.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libhtc_ril_wrapper.so:system/lib/libhtc_ril_wrapper.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/liboemcamera.so:system/lib/liboemcamera.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libOmxVdec.so:system/lib/libOmxVdec.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libOmxVidEnc.so:system/lib/libOmxVidEnc.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libOmxCore.so:system/lib/libOmxCore.so \\
-vendor/__MANUFACTURER__/__DEVICE__/proprietary/gps.htcleo.so:system/lib/hw/gps.htcleo.so \\
-vendor/__MANUFACTURER__/__DEVICE__/proprietary/libgps.so:system/lib/libgps.so \\
-vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensors.bravo.so:system/lib/hw/sensors.bravo.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensors.bravo.so:system/lib/hw/sensors.bravo.so \\
 EOF
 
 ./setup-makefiles.sh
