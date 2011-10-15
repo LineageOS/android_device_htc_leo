@@ -23,56 +23,11 @@
 ## (1) First, the most specific values, i.e. the aspects that are specific to GSM
 
 PRODUCT_COPY_FILES += \
-    device/htc/leo/init.htcleo.rc:root/init.htcleo.rc \
-    device/htc/leo/init.rc:root/init.rc \
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.sf.lcd_density=240 \
-    rild.libpath=/system/lib/libhtc_ril.so \
-    ro.ril.ecc.HTC-ELL=92,93,94 \
-    ro.ril.ecc.HTC-WWE=999 \
-    ro.ril.enable.a52.HTC-ITA=1 \
-    ro.ril.enable.a53.HTC-ITA=1 \
-    ro.ril.enable.a52=0 \
-    ro.ril.enable.a53=1 \
-    ro.ril.enable.dtm=1 \
-    ro.ril.gprsclass=12 \
-    ro.ril.hsdpa.category=8 \
-    ro.ril.hsupa.category=5 \
-    ro.ril.hsxpa=2 \
-    mobiledata.interfaces=rmnet0,rmnet1,rmnet2,ppp0 \
-    wifi.interface=eth0 \
-    wifi.supplicant_scan_interval=15
-
-# Default network type.
-# 0 => WCDMA preferred.
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.default_network=0
-
-
-# Set default_france.acdb to audio_ctl driver if the ro.cid is HTC__203
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.ril.enable.prl.recognition=1
-
-# The OpenGL ES API level that is natively supported by this device.
-# This is a 16.16 fixed point number
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opengles.version=131072
-
+    device/htc/leo/prebuilt/init.htcleo.rc:root/init.htcleo.rc \
+    device/htc/leo/prebuilt/ueventd.htcleo.rc:root/ueventd.htcleo.rc \
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.media.dec.jpeg.memcap=20000000
-
-# This is a high density device with more memory, so larger vm heaps for it.
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.heapsize=32m
-
-# leo have huge 250Mb unwritable system and small 50Mb cache .
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.dexopt-data-only=1
 
 ## (2) Also get non-open-source GSM-specific aspects if available
 $(call inherit-product-if-exists, vendor/htc/leo/leo-vendor.mk)
@@ -93,7 +48,11 @@ PRODUCT_COPY_FILES += \
 
 # media config xml file
 PRODUCT_COPY_FILES += \
-    device/htc/leo/media_profiles.xml:system/etc/media_profiles.xml
+    device/htc/leo/prebuilt/media_profiles.xml:system/etc/media_profiles.xml
+
+# This file is used to install the enable RMNET and corresponding modules which dont get activated by normal module script
+PRODUCT_COPY_FILES += \
+    device/htc/leo/prebuilt/01modules:system/etc/init.d/01modules
 
 PRODUCT_PACKAGES += \
     sensors.htcleo \
@@ -112,44 +71,44 @@ PRODUCT_PACKAGES += \
 PRODUCT_LOCALES := hdpi
 
 PRODUCT_COPY_FILES += \
-    device/htc/leo/vold.fstab:system/etc/vold.fstab
+    device/htc/leo/prebuilt/vold.fstab:system/etc/vold.fstab
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
-    device/htc/leo/leo-keypad.kl:system/usr/keylayout/leo-keypad.kl \
-    device/htc/leo/leo-keypad.kcm.bin:system/usr/keychars/leo-keypad.kcm.bin \
-    device/htc/leo/h2w_headset.kl:system/usr/keylayout/h2w_headset.kl
+    device/htc/leo/prebuilt/keylayout/leo-keypad.kl:system/usr/keylayout/leo-keypad.kl \
+    device/htc/leo/prebuilt/keylayout/leo-keypad.kcm.bin:system/usr/keychars/leo-keypad.kcm.bin \
+    device/htc/leo/prebuilt/keylayout/h2w_headset.kl:system/usr/keylayout/h2w_headset.kl
 
 # Firmware
 PRODUCT_COPY_FILES += \
-    device/htc/leo/firmware/fw_bcm4329.bin:system/etc/firmware/fw_bcm4329.bin \
-    device/htc/leo/firmware/fw_bcm4329_apsta.bin:system/etc/firmware/fw_bcm4329_apsta.bin
+    device/htc/leo/prebuilt/firmware/fw_bcm4329.bin:system/etc/firmware/fw_bcm4329.bin \
+    device/htc/leo/prebuilt/firmware/fw_bcm4329_apsta.bin:system/etc/firmware/fw_bcm4329_apsta.bin
 
 #GSM APN LIST
 PRODUCT_COPY_FILES += \
-vendor/cyanogen/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
+    vendor/cyanogen/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
 
 
 PRODUCT_COPY_FILES += \
-    device/htc/leo/modules/bcm4329.ko:system/lib/modules/bcm4329.ko \
-    device/htc/leo/modules/cifs.ko:system/lib/modules/cifs.ko \
-    device/htc/leo/modules/msm_rmnet.ko:system/lib/modules/msm_rmnet.ko \
-    device/htc/leo/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-    device/htc/leo/modules/tun.ko:system/lib/modules/tun.ko \
-    device/htc/leo/modules/fuse.ko:system/lib/modules/fuse.ko
+    device/htc/leo/prebuilt/modules/bcm4329.ko:system/lib/modules/bcm4329.ko \
+    device/htc/leo/prebuilt/modules/cifs.ko:system/lib/modules/cifs.ko \
+    device/htc/leo/prebuilt/modules/msm_rmnet.ko:system/lib/modules/msm_rmnet.ko \
+    device/htc/leo/prebuilt/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
+    device/htc/leo/prebuilt/modules/tun.ko:system/lib/modules/tun.ko \
+    device/htc/leo/prebuilt/modules/fuse.ko:system/lib/modules/fuse.ko
 
 PRODUCT_COPY_FILES += \
-    device/htc/leo/kernel:boot/zImage \
+    device/htc/leo/prebuilt/kernel:boot/zImage \
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-LOCAL_KERNEL := device/htc/leo/kernel
+LOCAL_KERNEL := device/htc/leo/prebuilt/kernel
 else
 LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
 
 # The gps config appropriate for this device
 PRODUCT_COPY_FILES += \
-     device/htc/leo/gps.conf:system/etc/gps.conf
+     device/htc/leo/prebuilt/gps.conf:system/etc/gps.conf
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel

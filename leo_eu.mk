@@ -21,7 +21,7 @@
 
 # The gps config appropriate for this device
 PRODUCT_COPY_FILES += \
-     device/htc/leo/gps_eu.conf:system/etc/gps.conf
+     device/htc/leo/prebuilt/gps_eu.conf:system/etc/gps.conf
 
 
 # The rest of the configuration is inherited from a generic config

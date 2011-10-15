@@ -41,7 +41,6 @@ chmod 755 ../../../vendor/htc/$DEVICE/proprietary/parse_radio_log
 
 # Prebuilt libraries that are needed to build open-source libraries
 PRODUCT_COPY_FILES := \\
-    vendor/htc/__DEVICE__/proprietary/libgps.so:obj/lib/libgps.so \\
     vendor/htc/__DEVICE__/proprietary/libcamera.so:obj/lib/libcamera.so
 
 # All the blobs necessary for leo
@@ -64,7 +63,6 @@ PRODUCT_COPY_FILES += \\
     vendor/htc/__DEVICE__/proprietary/libGLESv2_adreno200.so:/system/lib/egl/libGLESv2_adreno200.so \\
     vendor/htc/__DEVICE__/proprietary/libq3dtools_adreno200.so:/system/lib/egl/libq3dtools_adreno200.so \\
     vendor/htc/__DEVICE__/proprietary/libcamera.so:/system/lib/libcamera.so \\
-    vendor/htc/__DEVICE__/proprietary/libgps.so:/system/lib/libgps.so \\
     vendor/htc/__DEVICE__/proprietary/libgsl.so:/system/lib/libgsl.so \\
     vendor/htc/__DEVICE__/proprietary/libhtc_acoustic.so:/system/lib/libhtc_acoustic.so \\
     vendor/htc/__DEVICE__/proprietary/libhtc_ril.so:/system/lib/libhtc_ril.so \\
