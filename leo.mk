@@ -24,7 +24,6 @@
 
 PRODUCT_COPY_FILES += \
     device/htc/leo/prebuilt/init.htcleo.rc:root/init.htcleo.rc \
-    device/htc/leo/prebuilt/ueventd.htcleo.rc:root/ueventd.htcleo.rc \
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
