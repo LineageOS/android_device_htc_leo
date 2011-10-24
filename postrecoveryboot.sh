@@ -14,4 +14,7 @@ fi
 #cat >> /etc/fstab << EOF
 #/dev/block/mmcblk0p2 /sd-ext $FS rw
 #EOF
+<<<<<<< HEAD
+=======
 
+>>>>>>> 40364b7f71c1fadc944e913c7577b31132cf0a65
