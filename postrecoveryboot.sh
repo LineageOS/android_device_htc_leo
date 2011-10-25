@@ -14,4 +14,3 @@ fi
 #cat >> /etc/fstab << EOF
 #/dev/block/mmcblk0p2 /sd-ext $FS rw
 #EOF
-
