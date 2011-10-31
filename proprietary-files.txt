@@ -1,5 +1,6 @@
 bin/akmd
 bin/parse_radio_log
+bin/vold
 etc/AudioBTID.csv
 etc/AdieHWCodecSetting.csv
 etc/firmware/BCM4329B1_002.002.023.0360.0362.hcd
@@ -15,6 +16,7 @@ lib/egl/libEGL_adreno200.so
 lib/egl/libGLESv1_CM_adreno200.so
 lib/egl/libGLESv2_adreno200.so
 lib/egl/libq3dtools_adreno200.so
+lib/libaudio.so
 lib/libcamera.so
 lib/libgsl.so
 lib/libhtc_acoustic.so
@@ -24,3 +26,6 @@ lib/libOmxVdec.so
 lib/libOmxVidEnc.so
 lib/libOmxCore.so
 lib/libmm-omxcore.so
+lib/hw/gps.htcleo.so
+lib/hw/gps.leo.so
+lib/hw/sensors.bravo.so
