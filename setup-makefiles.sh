@@ -40,7 +40,7 @@ MAKEFILE=../../../$OUTDIR/$DEVICE-vendor-blobs.mk
 
 # Prebuilt libraries that are needed to build open-source libraries
 PRODUCT_COPY_FILES := \\
-    $OUTDIR/proprietary/libcamera.so:obj/lib/libcamera.so
+    $OUTDIR/proprietary/lib/libcamera.so:obj/lib/libcamera.so
 
 # All the blobs necessary for leo
 PRODUCT_COPY_FILES += \\

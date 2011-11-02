@@ -16,6 +16,21 @@
 
 DEVICE=leo
 MANUFACTURER=htc
+STAGESYS=~/cm-$DEVICE/system
+
+if [ "$1" = "pull" ]; then
+  if [ -s "$STAGESYS" ]; then
+  rm -R ~/cm-$DEVICE
+  fi
+ mkdir ~/cm-$DEVICE
+ mkdir $STAGESYS
+ mkdir $STAGESYS/bin
+ mkdir $STAGESYS/lib
+ mkdir $STAGESYS/etc
+ adb pull /system/bin $STAGESYS/bin
+ adb pull /system/lib $STAGESYS/lib
+ adb pull /system/etc $STAGESYS/etc
+fi
 
 OUTDIR=../../../vendor/$MANUFACTURER/$DEVICE
 BASE=$OUTDIR/proprietary
@@ -26,7 +41,7 @@ for FILE in `cat proprietary-files.txt | grep -v ^# | grep -v ^$`; do
     if [ ! -d $BASE/$DIR ]; then
         mkdir -p $BASE/$DIR
     fi
-    unzip -j -o ../../../${DEVICE}_update.zip system/$FILE -d $BASE/$DIR
+    cp $STAGESYS/$FILE $BASE/$FILE
 done
 
 ./setup-makefiles.sh
