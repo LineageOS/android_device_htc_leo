@@ -28,53 +28,26 @@ USE_CAMERA_STUB := false
 # inherit from the proprietary version
 -include vendor/htc/leo/BoardConfigVendor.mk
 
-TARGET_NO_BOOTLOADER := true
-
-TARGET_BOARD_PLATFORM := qsd8k
-TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
+# include recovery offmode stuff
+-include device/htc/7x30-recovery/BoardConfigCommon.mk
 
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 ARCH_ARM_HAVE_TLS_REGISTER := true
-TARGET_BOOTLOADER_BOARD_NAME := htcleo
 
-# Wifi related defines
-BOARD_WPA_SUPPLICANT_DRIVER := WEXT
-WPA_SUPPLICANT_VERSION      := VER_0_6_X
-BOARD_WLAN_DEVICE           := bcm4329
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/bcm4329.ko"
-WIFI_DRIVER_FW_STA_PATH     := "/vendor/firmware/fw_bcm4329.bin"
-WIFI_DRIVER_FW_AP_PATH      := "/vendor/firmware/fw_bcm4329_apsta.bin"
-WIFI_DRIVER_MODULE_ARG      := "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/proc/calibration"
-WIFI_DRIVER_MODULE_NAME     := "bcm4329"
+TARGET_NO_BOOTLOADER := true
 
+BOARD_KERNEL_BASE := 0x11800000
 BOARD_KERNEL_CMDLINE := no_console_suspend=1 wire.search_count=5
 
-BOARD_USES_GENERIC_AUDIO := false
-BOARD_KERNEL_BASE := 0x11800000
-BOARD_KERNEL_NEW_PPPOX := true
-
-BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_BLUETOOTH_BCM := true
-
-BOARD_VENDOR_QCOM_AMSS_VERSION := 1550
-
-BOARD_VENDOR_USE_AKMD := akm8973
+TARGET_BOARD_PLATFORM := qsd8k
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
+TARGET_BOOTLOADER_BOARD_NAME := htcleo
 
 BOARD_EGL_CFG := device/htc/leo/prebuilt/egl.cfg
 
-BOARD_USE_FROYO_LIBCAMERA := true
-
-TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
-BOARD_NO_RGBX_8888 := true
-BOARD_USES_QCOM_LIBS := true
-
-BOARD_USE_KINETO_COMPATIBILITY := true
-
-BOARD_HAVE_FM_RADIO := true
-BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
-
+TARGET_RELEASETOOLS_EXTENSIONS := device/htc/common
 TARGET_CUSTOM_RELEASETOOL := device/htc/leo/releasetools/squisher
 
 # # cat /proc/mtd
@@ -92,14 +65,40 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE   := 0x09600000   # limited so we enforce room 
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x0d900000
 BOARD_FLASH_BLOCK_SIZE := 131072
 
+# Wifi related defines
+BOARD_WPA_SUPPLICANT_DRIVER := WEXT
+WPA_SUPPLICANT_VERSION      := VER_0_6_X
+BOARD_WLAN_DEVICE           := bcm4329
+WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/bcm4329.ko"
+WIFI_DRIVER_FW_STA_PATH     := "/vendor/firmware/fw_bcm4329.bin"
+WIFI_DRIVER_FW_AP_PATH      := "/vendor/firmware/fw_bcm4329_apsta.bin"
+WIFI_DRIVER_MODULE_ARG      := "firmware_path=/vendor/firmware/fw_bcm4329.bin nvram_path=/proc/calibration"
+WIFI_DRIVER_MODULE_NAME     := "bcm4329"
 
-TARGET_RELEASETOOLS_EXTENSIONS := device/htc/common
+BOARD_HAVE_BLUETOOTH := true
+BOARD_HAVE_BLUETOOTH_BCM := true
+
+BOARD_USES_GENERIC_AUDIO := false
+BOARD_KERNEL_NEW_PPPOX := true
+
+BOARD_USES_QCOM_LIBS := true
+BOARD_VENDOR_QCOM_AMSS_VERSION := 1550
+BOARD_VENDOR_USE_AKMD := akm8973
+
+BOARD_USE_FROYO_LIBCAMERA := true
+BOARD_NO_RGBX_8888 := true
+
+BOARD_USE_KINETO_COMPATIBILITY := true
+
+BOARD_HAVE_FM_RADIO := true
+BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
+
+TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
+
 TARGET_PREBUILT_KERNEL := device/htc/leo/prebuilt/kernel
+TARGET_PREBUILT_RECOVERY_KERNEL := device/htc/leo/prebuilt/recovery_kernel
 
 # to enable the GPS HAL
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := leo
 # AMSS version to use for GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 3200
-
-TARGET_PREBUILT_RECOVERY_KERNEL := device/htc/leo/prebuilt/recovery_kernel
--include device/htc/7x30-recovery/BoardConfigCommon.mk
