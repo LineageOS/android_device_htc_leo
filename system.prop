@@ -38,6 +38,9 @@ mobiledata.interfaces=rmnet0,rmnet1,rmnet2,ppp0
 # This is a high density device with more memory, so larger vm heaps for it.
 dalvik.vm.heapsize=32m
 
+# Scrolling cache 0:enable, 1:default enable, 2:default disable, 3:disable
+persist.sys.scrollingcache=2
+
 # leo have huge 250Mb unwritable system and small 50Mb cache .
 dalvik.vm.dexopt-data-only=1
 
