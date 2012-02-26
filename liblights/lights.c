@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2012 milaq
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +45,6 @@ static char const*const GREEN_LED_FILE
 static char const*const AMBER_LED_FILE
         = "/sys/class/leds/amber/brightness";
 
-static char const*const RED_LED_FILE
-        = "/sys/class/leds/red/brightness";
-
 static char const*const LCD_FILE
         = "/sys/class/leds/lcd-backlight/brightness";
 
@@ -56,13 +54,16 @@ static char const*const AMBER_BLINK_FILE
 static char const*const GREEN_BLINK_FILE
         = "/sys/class/leds/green/blink";
 
-static char const*const RED_BLINK_FILE
-        = "/sys/class/leds/red/blink";
-
 
 static char const*const BUTTON_FILE
         = "/sys/class/leds/button-backlight/brightness";
 
+enum {
+	LED_AMBER,
+	LED_GREEN,
+	LED_BLUE,
+	LED_BLANK,
+};
 
 /**
  * device methods
@@ -128,69 +129,75 @@ set_light_buttons(struct light_device_t* dev,
     return err;
 }
 
-static int
+static void
 set_speaker_light_locked(struct light_device_t* dev,
         struct light_state_t const* state)
 {
-    int len;
-    int alpha, red, green, blue;
-    int blink, freq, pwm;
-    int onMS, offMS;
-    unsigned int colorRGB;
+    	unsigned int colorRGB = state->color & 0xFFFFFF;
+	unsigned int color = LED_BLANK;
 
-    switch (state->flashMode) {
-        case LIGHT_FLASH_TIMED:
-            blink = 1;
-            onMS = state->flashOnMS;
-            offMS = state->flashOffMS;
-            break;
-        case LIGHT_FLASH_HARDWARE:
-            blink = 1;
-            onMS = state->flashOnMS;
-            offMS = state->flashOffMS;
-            break;
-        case LIGHT_FLASH_NONE:
-            blink = 0;
-            onMS = 0;
-            offMS = 0;
-            break;
-        default:
-            blink = 1;
-            onMS = 0;
-            offMS = 0;
-            break;
-    }
+	if (colorRGB & 0xFF)
+		color = LED_BLUE;
+	if ((colorRGB >> 8)&0xFF)
+		color = LED_GREEN;
+	if ((colorRGB >> 16)&0xFF)
+		color = LED_AMBER;
 
-    colorRGB = state->color;
+	int amber = (colorRGB >> 16)&0xFF;
+	int green = (colorRGB >> 8)&0xFF;
+	int blue = (colorRGB)&0xFF;
 
-#if 0
-    LOGD("set_speaker_light_locked colorRGB=%08X, onMS=%d, offMS=%d\n",
-            colorRGB, onMS, offMS);
-#endif
+	switch (state->flashMode) {
+		case LIGHT_FLASH_TIMED:
+			switch (color) {
+				case LED_AMBER:
+					write_int (AMBER_BLINK_FILE, 2);
+					write_int (GREEN_LED_FILE, 0);
+					break;
+				case LED_GREEN:
+					write_int (GREEN_BLINK_FILE, 3);
+					write_int (AMBER_LED_FILE, 0);
+					break;
+				case LED_BLUE:
+					write_int (GREEN_BLINK_FILE, 3);
+					write_int (AMBER_LED_FILE, 0);
+					break;
+				case LED_BLANK:
+					write_int (AMBER_BLINK_FILE, 0);
+					write_int (GREEN_BLINK_FILE, 0);
+					break;
+				default:
+					LOGE("set_led_state colorRGB=%08X, unknown color\n",
+							colorRGB);
+					break;
+			}
+			break;
+		case LIGHT_FLASH_NONE:
+			switch (color) {
+				case LED_AMBER:
+					write_int (AMBER_LED_FILE, 1);
+					write_int (GREEN_LED_FILE, 0);
+					break;
+				case LED_GREEN:
+					write_int (AMBER_LED_FILE, 0);
+					write_int (GREEN_LED_FILE, 1);
+					break;
+				case LED_BLUE:
+					write_int (AMBER_LED_FILE, 0);
+					write_int (GREEN_LED_FILE, 1);
+					break;
+				case LED_BLANK:
+					write_int (AMBER_LED_FILE, 0);
+					write_int (GREEN_LED_FILE, 0);
+					break;
 
-    red = (colorRGB >> 16) & 0xFF;
-    green = (colorRGB >> 8) & 0xFF;
-    blue = colorRGB & 0xFF;
+			}
+			break;
+		default:
+			LOGE("set_led_state colorRGB=%08X, unknown mode %d\n",
+					colorRGB, state->flashMode);
+	}
 
-    if (red) {
-        write_int(GREEN_LED_FILE, 0);
-        write_int(AMBER_LED_FILE, 1);
-        if (blink) {
-             //blink must come after brightness change
-             write_int(AMBER_BLINK_FILE, 1);
-        }
-    } else if (green || blue) {
-        write_int(AMBER_LED_FILE, 0);
-        write_int(GREEN_LED_FILE, 1);
-        if (blink) {
-             write_int(GREEN_BLINK_FILE, 1);
-        }
-    } else {
-        write_int(GREEN_LED_FILE, 0);
-        write_int(AMBER_LED_FILE, 0);
-    }
-
-    return 0;
 }
 
 static void
@@ -292,7 +299,7 @@ const struct hw_module_t HAL_MODULE_INFO_SYM = {
     .version_major = 1,
     .version_minor = 0,
     .id = LIGHTS_HARDWARE_MODULE_ID,
-    .name = "QCT MSM7K lights Module",
-    .author = "Google, Inc.",
+    .name = "HTC leo lights module",
+    .author = "Micha LaQua",
     .methods = &lights_module_methods,
 };

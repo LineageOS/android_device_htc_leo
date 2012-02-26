@@ -5,7 +5,6 @@ etc/AudioBTID.csv
 etc/AdieHWCodecSetting.csv
 etc/firmware/BCM4329B1_002.002.023.0360.0362.hcd
 etc/firmware/BCM4329B1_002.002.023.0436.0439.hcd
-etc/firmware/BCM4329B1_002.002.023.0436.0439.hcd
 etc/firmware/BCM4329B1_002.002.023.0511.0538.hcd
 etc/firmware/bcm4329.hcd
 etc/firmware/htcleo.acdb

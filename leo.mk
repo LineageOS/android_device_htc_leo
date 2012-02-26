@@ -68,7 +68,7 @@ PRODUCT_PACKAGES += \
 
 
 # leo uses high-density artwork where available 
-PRODUCT_LOCALES := hdpi
+PRODUCT_LOCALES := en_US
 
 PRODUCT_COPY_FILES += \
     device/htc/leo/prebuilt/vold.fstab:system/etc/vold.fstab
@@ -88,14 +88,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/cyanogen/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
 
-# kernel modules
-PRODUCT_COPY_FILES += \
-    device/htc/leo/prebuilt/modules/bcm4329.ko:system/lib/modules/bcm4329.ko \
-    device/htc/leo/prebuilt/modules/cifs.ko:system/lib/modules/cifs.ko \
-    device/htc/leo/prebuilt/modules/msm_rmnet.ko:system/lib/modules/msm_rmnet.ko \
-    device/htc/leo/prebuilt/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-    device/htc/leo/prebuilt/modules/tun.ko:system/lib/modules/tun.ko \
-    device/htc/leo/prebuilt/modules/fuse.ko:system/lib/modules/fuse.ko
+# Kernel Modules
+PRODUCT_COPY_FILES += $(shell \
+    find device/htc/leo/prebuilt/modules -name '*.ko' \
+    | sed -r 's/^\/?(.*\/)([^/ ]+)$$/\1\2:system\/lib\/modules\/\2/' \
+    | tr '\n' ' ')
 
 # kernel
 PRODUCT_COPY_FILES += \
